@@ -34,11 +34,12 @@ client.once(Events.ClientReady, c => {
 });
 
 // Log in to Discord with your client's token
-client.login(token);
+client.login(token)
+module.exports = client;
 
 client.on(Events.InteractionCreate, async interaction => {
 	console.log(interaction);
-
+	
 	const command = interaction.client.commands.get(interaction.commandName);
 
 	if (!command)
@@ -55,3 +56,4 @@ client.on(Events.InteractionCreate, async interaction => {
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true});
 	}
 });
+
