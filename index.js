@@ -38,8 +38,7 @@ client.login(token)
 module.exports = client;
 
 client.on(Events.InteractionCreate, async interaction => {
-	console.log(interaction);
-	
+	//console.log(interaction);
 	const command = interaction.client.commands.get(interaction.commandName);
 
 	if (!command)

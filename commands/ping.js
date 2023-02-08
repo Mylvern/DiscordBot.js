@@ -1,4 +1,3 @@
-
 // Requires the SlashCommandBuilder NEEDED FOR EVERY COMMAND
 const { SlashCommandBuilder } = require('discord.js');
 

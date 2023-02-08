@@ -22,7 +22,7 @@ module.exports = {
 		// Use the helpful Attachment class structure to process the file for you
 		const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
 
-		interaction.client.users.cache.get('354711260585000962').send({content : "AMOGUS DEMANDS YOU, SERVE YOUR COUNTRY NOW!", files : [attachment]});
+		interaction.client.users.cache.get('910787807763640321').send({content : "AMOGUS DEMANDS YOU, SERVE YOUR COUNTRY NOW!", files : [attachment]});
 
 		interaction.reply({ content: "Message sent!", files: [attachment], ephemeral: true });
 		
