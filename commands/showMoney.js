@@ -1,7 +1,7 @@
 // Requires the SlashCommandBuilder NEEDED FOR EVERY COMMAND
 const { SlashCommandBuilder } = require('discord.js');
 const fs = require('fs');
-const {addUser} = require("./addUser")
+const {addUser} = require("../functions/addUser")
 
 
 // Exports the data so it can be Required in other files

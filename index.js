@@ -1,14 +1,19 @@
 const fs = require('node:fs');
 const path = require('node:path');
 // Require the necessary discord.js classes
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+	intents: [
+	  GatewayIntentBits.Guilds,
+	  GatewayIntentBits.GuildMessages,
+	  GatewayIntentBits.GuildVoiceStates
+	],
+  });
 
 client.commands = new Collection();
-
 // Path to the command directory
 const commandsPath = path.join(__dirname, 'commands');
 // Command files, all files that end with .js in the ${commandsPath} directory
@@ -35,12 +40,10 @@ client.once(Events.ClientReady, c => {
 
 // Log in to Discord with your client's token
 client.login(token)
-module.exports = client;
 
 client.on(Events.InteractionCreate, async interaction => {
 	//console.log(interaction);
 	const command = interaction.client.commands.get(interaction.commandName);
-
 	if (!command)
 	{
 		console.error(`No command matching ${interaction.commandName} was found.`)
