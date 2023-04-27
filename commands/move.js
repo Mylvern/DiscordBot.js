@@ -15,9 +15,15 @@ module.exports = {
             ),
     // executes when the command is called
 	async execute(interaction) {
-        const moveChannel = interaction.options.getChannel("channel")
-        for (const [memberID, member] of interaction.channel.members){
-            member.voice.setChannel(moveChannel.id).then(() => interaction.reply({ content: `${member.user.tag} Moved to ${moveChannel.name}`, ephemeral: true })).catch(console.error)
+        const moveChannel = interaction.options.getChannel("channel");
+        let index = 0;
+        let message = "";
+        for (const [memberID, member] of interaction.member.voice.channel.members){
+                message += `,${member.user.tag}`;
+                member.voice.setChannel(moveChannel.id).catch(console.error)
+                index++;
         }
+        interaction.reply({content: `${message} moved to ${moveChannel.name}`, ephemeral: true})
+        console.log(`${message} moved to ${moveChannel.name}`)
 	},
 };
