@@ -1,5 +1,5 @@
 // Requires the SlashCommandBuilder NEEDED FOR EVERY COMMAND
-const { SlashCommandBuilder, Embed } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 // Exports the data so it can be Required in other files
 module.exports = {

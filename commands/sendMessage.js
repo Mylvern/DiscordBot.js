@@ -1,30 +1,76 @@
 // Requires the SlashCommandBuilder NEEDED FOR EVERY COMMAND
-const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-const Canvas = require('@napi-rs/canvas');
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
+const https = require("https");
+const fs = require("fs");
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('troll')
-		.setDescription('get rekt noob'),
-	async execute(interaction) {
-		// interaction.guild is the object representing the Guild in which the command was run
-		// Create a 700x250 pixel canvas and get its context
-		// The context will be used to modify the canvas
-		const canvas = Canvas.createCanvas(700, 250);
-		const context = canvas.getContext('2d');
+  data: new SlashCommandBuilder()
+    .addUserOption((option) =>
+      option.setName("user").setDescription("User to troll").setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("message")
+        .setDescription("Message to send")
+        .setRequired(true)
+    )
+    .addAttachmentOption((option) =>
+      option.setName("image").setDescription("Image to send").setRequired(true)
+    )
+    .setName("troll")
+    .setDescription("get rekt noob"),
+   execute(interaction) {
 
-		
-		const background = await Canvas.loadImage('./amogus.jpg');
+    const user = interaction.options.getUser("user");
+    const message = interaction.options.getString("message");
+    const image = interaction.options.getAttachment("image");
 
-		// This uses the canvas dimensions to stretch the image onto the entire canvas
-		context.drawImage(background, 0, 0, canvas.width, canvas.height);
+    if (
+      image.contentType !== "image/webp" &&
+      image.contentType !== "image/png" &&
+      image.contentType !== "image/jpeg" &&
+      image.contentType !== "image/gif"
+    ) {
+      interaction.reply({
+        content: `Your image is not valid, please use valid extentions (webp, png, jpg/jpeg)`,
+        ephemeral: true,
+      });
+      return;
+    }
 
-		// Use the helpful Attachment class structure to process the file for you
-		const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
 
-		interaction.client.users.cache.get('910787807763640321').send({content : "AMOGUS DEMANDS YOU, SERVE YOUR COUNTRY NOW!", files : [attachment]});
+    const contentType = image.contentType.split("/")[1];
+    const file = fs.createWriteStream("file." + contentType);
+    https.get(image.url, function (response) {
+      response.pipe(file);
 
-		interaction.reply({ content: "Message sent!", files: [attachment], ephemeral: true });
-		
-	}
+      // after download completed close filestream
+      file.on("finish", () => {
+        file.close();
+		    sendAttachment(interaction, user, message, image, file);
+
+    });
+	});
+
+	
+
+
+  },
 };
+
+function sendAttachment(interaction, user, message, image, file)
+{
+	const attachment = new AttachmentBuilder(file.path)
+
+	interaction.client.users.cache
+	  .get(user.id)
+	  .send({ content: message, files: [attachment] });
+
+	
+  
+    interaction.reply({
+	  content: "Message sent!",
+	  files: [attachment],
+	  ephemeral: true,
+	});
+}

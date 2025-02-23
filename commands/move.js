@@ -14,7 +14,7 @@ module.exports = {
                 .addChannelTypes(ChannelType.GuildVoice)
             ),
     // executes when the command is called
-	async execute(interaction) {
+	execute(interaction) {
         const moveChannel = interaction.options.getChannel("channel");
         let index = 0;
         let message = "";
