@@ -1,5 +1,4 @@
-
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, Interaction, User } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,6 +7,18 @@ module.exports = {
         .setDescription("User to see the messages")
         .setRequired(true)
     )
-    .setName("read messages")
-    .setDescription("Prints the messages with the selected user")
+    .setName("read-messages")
+    .setDescription("Prints the messages with the selected user"),
+    /**
+     * 
+     * @param {Interaction} interaction 
+     */
+    async execute(interaction)
+    {
+        /**
+         * @type {User}
+         */
+        const user = interaction.options.getUser("user");
+        console.log(user.dmChannel.messages)
+    }
 }

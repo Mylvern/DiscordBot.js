@@ -25,11 +25,13 @@ module.exports = {
     const message = interaction.options.getString("message");
     const image = interaction.options.getAttachment("image");
 
+    console.log(image.contentType);
     if (
       image.contentType !== "image/webp" &&
       image.contentType !== "image/png" &&
       image.contentType !== "image/jpeg" &&
-      image.contentType !== "image/gif"
+      image.contentType !== "image/gif" &&
+      image.contentType !== "video/mp4"
     ) {
       interaction.reply({
         content: `Your image is not valid, please use valid extentions (webp, png, jpg/jpeg)`,
@@ -40,7 +42,7 @@ module.exports = {
 
 
     const contentType = image.contentType.split("/")[1];
-    const file = fs.createWriteStream("file." + contentType);
+    const file = fs.createWriteStream("./data/file." + contentType);
     https.get(image.url, function (response) {
       response.pipe(file);
 

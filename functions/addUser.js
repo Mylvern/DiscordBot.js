@@ -13,7 +13,8 @@ module.exports = {
 				return i;
 			}
 		}
-        moneyJSON.push({user: user, money: 50});
+        moneyJSON.push({user: interaction.user.tag, money: 50});
+		console.log("test");
 		fs.writeFileSync("data/money.json", JSON.stringify(moneyJSON));
         return moneyJSON.length - 1;
     }

@@ -1,8 +1,11 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
 const fs = require('node:fs');
+const dotenv = require('dotenv');
 
-const rest = new REST({ version: '10' }).setToken(token);
+dotenv.config();
+
+
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 
 (async () => {
@@ -10,7 +13,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 		console.log(`Started deleting all your application (/) commands.`);
 
 		const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
 			{ body: [] },
 		);
 
